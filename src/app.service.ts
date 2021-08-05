@@ -30,7 +30,7 @@ export class AppService {
               )
             : EMPTY,
         ),
-        reduce((acc, res) => acc.concat(res.data), []),
+        reduce((acc, res) => acc.concat(res.data.data), []),
       );
   }
 }
