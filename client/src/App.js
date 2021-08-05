@@ -30,12 +30,6 @@ function App() {
 
   const columns = [
     {
-      field: 'id',
-      headerName: 'ID',
-      width: 150,
-      editable: false,
-    },
-    {
       field: 'first_name',
       headerName: 'First name',
       width: 150,
@@ -50,13 +44,13 @@ function App() {
     {
       field: 'email_address',
       headerName: 'Email Address',
-      width: 150,
+      width: 300,
       editable: false,
     },
     {
       field: 'title',
       headerName: 'Job Title',
-      width: 150,
+      width: 300,
       editable: false,
     },
   ];
@@ -67,12 +61,17 @@ function App() {
   //  Display each Person’s name, email address, and job title.
 
   return (
-    <div style={{ height: 800, width: '100%' }}>
-      <DataGrid
-        columns={columns}
-        rows={peopleData}
-        pageSize={25}
-      />
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+      }}
+    >
+      <div style={{ height: 600, minWidth: '900px' }}>
+        <DataGrid columns={columns} rows={peopleData} pageSize={25} />
+      </div>
     </div>
   );
 }
