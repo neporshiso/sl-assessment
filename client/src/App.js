@@ -1,20 +1,21 @@
 import * as React from 'react';
 import axios from 'axios';
-import { DataGrid } from '@material-ui/data-grid';
+import { Button } from '@material-ui/core';
+import { TableOne } from './components/TableOne';
+import { TableTwo } from './components/TableTwo';
 
 import './App.css';
 
 function App() {
+  const [showTable, setShowTable] = React.useState(1);
   const [peopleData, setPeopleData] = React.useState([]);
+  const [charCountData, setCharCountData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     const fetchPeopleData = async () => {
       try {
-        //TODO: could we map over this and grab the data points we actually need??
-        //TODO: Add loading animation
         const { data } = await axios.get('http://localhost:3001/api/people');
-        console.log('>>>>', data);
         setPeopleData(data);
         setIsLoading(false);
         return data;
@@ -28,37 +29,24 @@ function App() {
     fetchPeopleData();
   }, []);
 
-  const columns = [
-    {
-      field: 'first_name',
-      headerName: 'First name',
-      width: 150,
-      editable: false,
-    },
-    {
-      field: 'last_name',
-      headerName: 'Last name',
-      width: 150,
-      editable: false,
-    },
-    {
-      field: 'email_address',
-      headerName: 'Email Address',
-      width: 300,
-      editable: false,
-    },
-    {
-      field: 'title',
-      headerName: 'Job Title',
-      width: 300,
-      editable: false,
-    },
-  ];
+  const handleLevelTwoClick = () => {
+    const emailAddressString = peopleData.map((p) => p.email_address).join('');
+    const charCountObj = [...emailAddressString].reduce((acc, currentValue) => {
+      acc[currentValue] = acc[currentValue] ? acc[currentValue] + 1 : 1;
+      return acc;
+    }, {});
 
-  if (isLoading) {
-    return <h1>Please wait...</h1>;
-  }
-  //  Display each Person’s name, email address, and job title.
+    const result = Object.keys(charCountObj).map((k) => {
+      return {
+        id: k,
+        char: k,
+        count: charCountObj[k],
+      };
+    });
+
+    setCharCountData(result);
+    setShowTable(2);
+  };
 
   return (
     <div
@@ -67,10 +55,30 @@ function App() {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
+        flexDirection: 'column',
       }}
     >
-      <div style={{ height: 600, minWidth: '900px' }}>
-        <DataGrid columns={columns} rows={peopleData} pageSize={25} />
+      {showTable === 1 && (
+        <TableOne isLoading={isLoading} rows={peopleData} pageSize={25} />
+      )}
+      {showTable === 2 && (
+        <TableTwo isLoading={isLoading} rows={charCountData} pageSize={25} />
+      )}
+      <div
+        style={{
+          justifySelf: 'flex-start',
+          alignSelf: 'center',
+          minWidth: '900px',
+          marginTop: '10px',
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleLevelTwoClick()}
+        >
+          Show Character Frequency Count
+        </Button>
       </div>
     </div>
   );
