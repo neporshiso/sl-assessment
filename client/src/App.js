@@ -1,8 +1,14 @@
 import * as React from 'react';
 import axios from 'axios';
-import { Button } from '@material-ui/core';
-import { TableOne } from './components/TableOne';
-import { TableTwo } from './components/TableTwo';
+import { Button, Typography } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/styles';
+import { Table } from './components/Table';
+import { AppWrapper, ButtonWrapper, theme } from './components/Styled';
+import {
+  peopleDataColumns,
+  levelTwoColumns,
+  levelTwoSortModel,
+} from './tableConfig';
 
 import './App.css';
 
@@ -101,68 +107,75 @@ function App() {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        flexDirection: 'column',
-      }}
-    >
-      {showTable === 1 && (
-        <>
-          <TableOne isLoading={isLoading} rows={peopleData} pageSize={25} />
-          <div
-            style={{
-              justifySelf: 'flex-start',
-              alignSelf: 'center',
-              minWidth: '900px',
-              marginTop: '10px',
-            }}
-          >
-            {/* Disable button if isloaidng */}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleLevelTwoClick()}
-            >
-              Show Character Frequency Count
-            </Button>
-          </div>
-        </>
-      )}
-      {showTable === 2 && (
-        <>
-          <TableTwo isLoading={isLoading} rows={charCountData} pageSize={25} />
-          <div
-            style={{
-              justifySelf: 'flex-start',
-              alignSelf: 'center',
-              minWidth: '400px',
-              marginTop: '10px',
-            }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleLevelThreeClick()}
-            >
-              Show Potential Duplicates
-            </Button>
-          </div>
-        </>
-      )}
-      {showTable === 3 && (
-        <>
-          <TableOne
-            isLoading={isLoading}
-            rows={duplicatePeopleData}
-            pageSize={25}
-          />
-        </>
-      )}
-    </div>
+    <ThemeProvider theme={theme}>
+      <AppWrapper>
+        {showTable === 1 && (
+          <>
+            <Typography variant="h1">Level One Table</Typography>
+            <Table
+              isLoading={isLoading}
+              columns={peopleDataColumns}
+              rows={peopleData}
+              pageSize={25}
+            />
+            <ButtonWrapper>
+              <Button
+                disabled={isLoading}
+                variant="contained"
+                color="primary"
+                onClick={() => handleLevelTwoClick()}
+              >
+                Show Character Frequency Count
+              </Button>
+            </ButtonWrapper>
+          </>
+        )}
+        {showTable === 2 && (
+          <>
+            <Typography variant="h1">Level Two Table</Typography>
+            <Table
+              isLoading={isLoading}
+              columns={levelTwoColumns}
+              rows={charCountData}
+              pageSize={25}
+              sortModel={levelTwoSortModel}
+              maxWidth="400px"
+            />
+
+            <ButtonWrapper minWidth="400px">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleLevelThreeClick()}
+              >
+                Show Potential Duplicates
+              </Button>
+            </ButtonWrapper>
+          </>
+        )}
+        {showTable === 3 && (
+          <>
+            <Typography variant="h1">Level Three Table</Typography>
+            <Table
+              isLoading={isLoading}
+              columns={peopleDataColumns}
+              rows={duplicatePeopleData}
+              pageSize={25}
+            />
+
+            <ButtonWrapper>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setShowTable(1)}
+              >
+                Start Over
+              </Button>
+            </ButtonWrapper>
+          </>
+        )}
+      </AppWrapper>
+    </ThemeProvider>
   );
 }
 

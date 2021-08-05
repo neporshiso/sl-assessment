@@ -1,6 +1,5 @@
-import { DataGrid } from '@material-ui/data-grid';
-
-const levelOneColumns = [
+// used in level 1 & 3 tables
+export const peopleDataColumns = [
   {
     field: 'first_name',
     headerName: 'First name',
@@ -27,20 +26,24 @@ const levelOneColumns = [
   },
 ];
 
-export const TableOne = ({
-  isLoading,
-  columns = levelOneColumns,
-  rows,
-  pageSize,
-}) => {
-  return (
-    <div style={{ height: 600, maxWidth: '900px', width: '100%' }}>
-      <DataGrid
-        loading={isLoading}
-        columns={columns}
-        rows={rows}
-        pageSize={pageSize}
-      />
-    </div>
-  );
-};
+export const levelTwoColumns = [
+  {
+    field: 'char',
+    headerName: 'Character',
+    width: 150,
+    editable: false,
+  },
+  {
+    field: 'count',
+    headerName: 'Count',
+    width: 150,
+    editable: false,
+  },
+];
+
+export const levelTwoSortModel = [
+  {
+    field: 'count',
+    sort: 'desc',
+  },
+];
