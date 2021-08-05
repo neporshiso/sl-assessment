@@ -120,6 +120,7 @@ function App() {
             />
             <ButtonWrapper>
               <Button
+                data-testid="Button1"
                 disabled={isLoading}
                 variant="contained"
                 color="primary"
@@ -144,6 +145,7 @@ function App() {
 
             <ButtonWrapper minWidth="400px">
               <Button
+                data-testid="Button2"
                 variant="contained"
                 color="primary"
                 onClick={() => handleLevelThreeClick()}
@@ -165,6 +167,7 @@ function App() {
 
             <ButtonWrapper>
               <Button
+                data-testid="Button3"
                 variant="contained"
                 color="primary"
                 onClick={() => setShowTable(1)}
